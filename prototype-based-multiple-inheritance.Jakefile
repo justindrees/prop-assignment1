@@ -59,11 +59,20 @@ The 'call' method should be implemented in 'myObject' and should be inherited
 by all objects created by 'myObject.create(prototypeList)'.
 
 Note:
-* There can be name clashes (same name of prototype which another inherits).
+There can be name clashes (same name of prototype which another inherits).
 So use depth-first search from left to right and take the first that matches.
 There's an in-built lookup function:
 obj.funcA;
 But we should implement call method:  obj.call(funcA, [...])
 It searches tree to find the appropriate function to use.
 
+
+Example:
+var obj0 = myObject.create(null);
+obj0.func = function(arg) { return "func0: " + arg; };
+var obj1 = myObject.create([obj0]);
+var obj2 = myObject.create([]);
+obj2.func = function(arg) { return "func2: " + arg; };
+var obj3 = myObject.create([obj1, obj2]);
+var result = obj3.call("func", ["hello"]);
 */
