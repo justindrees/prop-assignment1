@@ -1,25 +1,53 @@
 var myObject = {
+	prototypeList: [],
 	create: function(protoList) {
-		this.prototypeList = [];
-
 		if (protoList == null) {
-			this.prototypeList = [];
+			// Do nothing
 		} else {
 			for (element in protoList) {
 				this.prototypeList.push(element);
 			}
 		}
-		var testFunction = function() {
-			return true;
-		}
 	},
-	call: function(funcName) {
-		return "Not yet implemented";
+	call: function(funcName, parameters) {
+		// Check if this object has a function whose name == funcName
+		if (typeof this.funcName === 'function') {
+			return this.funcName(parameters);
+		} else {
+			// Loop through prototypeList to check if this object has
+			// a parent with a function whose name == funcName
+			for (parent in prototypeList) {
+				if (typeof this.funcName === 'function') {
+					return parent.funcName(parameters);
+				} else {
+					// Do a depth-first search through the parent's children
+					// (and the children's children)
+					// to see if any of these objects has a function whose name == funcName
+				}
+			}
+		}
 	}
 }
 
-var list = [1,2,3]
-var obj0 = myObject.create(list);
+/*
+// Test code
+// Create a new object "obj0" of myObject that doesn't inherit
+var obj0 = myObject.create(null);
+
+// Add a method to obj0 called func
+obj0.func = function(arg) { return "func0: " + arg; };
+
+// Create a new object obj1 of myObject that inherit obj0
+var obj1 = myObject.create([obj0]);
+
+// Create variable that uses 'call' method to see if obj1 has a method
+// named 'func' with parameter ["hello"]
+// or if obj1 inherit another object with this method
+var result = obj1.call("func", ["hello"]);
+
+// Print result to screen. It should display "func0: hello"
+debug(result);
+*/
 
 
 /*
