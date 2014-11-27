@@ -5,19 +5,20 @@ var myObject = {
 			prototypeList: [],
 			call: function(funcName, parameters) {
 				// Check if this object has a function whose name == funcName
-				if (typeof this.funcName === 'function') {
-					return this.funcName(parameters);
+				if (this.hasOwnProperty(funcName)) {
+					// TODO: figure out how to call funcName(parameters)
+					// and return the result of calling funcName(parameters)
 				} else {
 					// Loop through prototypeList to check if this object has
 					// a parent with a function whose name == funcName
-					for (parent in copy.prototypeList) {
-						if (typeof this.funcName === 'function') {
-							return parent.funcName(parameters);
+					for (parent in this.prototypeList) {
+						if (parent.hasOwnProperty(funcName)) {
+							// TODO: figure out how to call funcName(parameters)
+							// and return the result of calling funcName(parameters)
 						} else {
 							// Do a depth-first search through the parent's children
 							// (and the children's children)
 							// to see if any of these objects has a function whose name == funcName
-							debug("in second else of call method")
 						}
 					}
 				}
@@ -50,10 +51,12 @@ var obj1 = myObject.create([obj0]);
 /* Create variable that uses 'call' method to see if obj1 has a method
 named 'func' with parameter ["hello"]  or if obj1 inherits another object with this method
 */
-var result = obj1.call("func", ["hello"]);
+var result1 = obj0.call("func", ["hello"]);
+var result2 = obj1.call("func", ["hello"]);
 
 // Print result to screen. It should display "func0: hello"
-//debug(result);
+debug(result1);
+debug(result2);
 
 
 
