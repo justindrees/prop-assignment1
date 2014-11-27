@@ -5,9 +5,10 @@ var myObject = {
 			// Do nothing
 		} else {
 			for (element in protoList) {
-				this.prototypeList.push(element);
+				prototypeList.push(element);
 			}
 		}
+		return this;
 	},
 	call: function(funcName, parameters) {
 		// Check if this object has a function whose name == funcName
@@ -29,7 +30,7 @@ var myObject = {
 	}
 }
 
-/*
+
 // Test code
 // Create a new object "obj0" of myObject that doesn't inherit
 var obj0 = myObject.create(null);
@@ -40,17 +41,26 @@ obj0.func = function(arg) { return "func0: " + arg; };
 // Create a new object obj1 of myObject that inherit obj0
 var obj1 = myObject.create([obj0]);
 
-// Create variable that uses 'call' method to see if obj1 has a method
-// named 'func' with parameter ["hello"]
-// or if obj1 inherit another object with this method
+/* Create variable that uses 'call' method to see if obj1 has a method
+named 'func' with parameter ["hello"]  or if obj1 inherit another object with this method
+*/
 var result = obj1.call("func", ["hello"]);
 
 // Print result to screen. It should display "func0: hello"
 debug(result);
-*/
+
 
 
 /*
+http://stackoverflow.com/questions/9163341/multiple-inheritance-prototypes-in-javascript
+http://www.phpied.com/3-ways-to-define-a-javascript-class/
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
+http://stackoverflow.com/questions/2064731/good-example-of-javascripts-prototype-based-inheritance
+http://javascript.info/tutorial/inheritance
+http://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/
+http://stackoverflow.com/questions/3007460/javascript-check-if-anonymous-object-has-a-method
+
+
 PROTOTYPE-BASED MULTIPLE INHERITANCE
 Task is to create an object 'myObject' with a 'create' method that supports
 multiple inheritance of functions: 'myObject.create(prototypeList)',
