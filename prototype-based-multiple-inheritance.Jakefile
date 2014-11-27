@@ -2,7 +2,26 @@ var myObject = {
 //	prototypeList: [],
 	create: function(protoList) {
 		var copy = {
-			prototypeList: []
+			prototypeList: [],
+			call: function(funcName, parameters) {
+				// Check if this object has a function whose name == funcName
+				if (typeof this.funcName === 'function') {
+					return this.funcName(parameters);
+				} else {
+					// Loop through prototypeList to check if this object has
+					// a parent with a function whose name == funcName
+					for (parent in copy.prototypeList) {
+						if (typeof this.funcName === 'function') {
+							return parent.funcName(parameters);
+						} else {
+							// Do a depth-first search through the parent's children
+							// (and the children's children)
+							// to see if any of these objects has a function whose name == funcName
+							debug("in second else of call method")
+						}
+					}
+				}
+			}
 		};
 		copy.prototype = myObject;
 
@@ -14,24 +33,6 @@ var myObject = {
 			}
 		}
 		return copy;
-	},
-	call: function(funcName, parameters) {
-		// Check if this object has a function whose name == funcName
-		if (typeof this.funcName === 'function') {
-			return this.funcName(parameters);
-		} else {
-			// Loop through prototypeList to check if this object has
-			// a parent with a function whose name == funcName
-			for (parent in prototypeList) {
-				if (typeof this.funcName === 'function') {
-					return parent.funcName(parameters);
-				} else {
-					// Do a depth-first search through the parent's children
-					// (and the children's children)
-					// to see if any of these objects has a function whose name == funcName
-				}
-			}
-		}
 	}
 }
 
@@ -47,12 +48,12 @@ obj0.func = function(arg) { return "func0: " + arg; };
 var obj1 = myObject.create([obj0]);
 
 /* Create variable that uses 'call' method to see if obj1 has a method
-named 'func' with parameter ["hello"]  or if obj1 inherit another object with this method
+named 'func' with parameter ["hello"]  or if obj1 inherits another object with this method
 */
 var result = obj1.call("func", ["hello"]);
 
 // Print result to screen. It should display "func0: hello"
-debug(result);
+//debug(result);
 
 
 
