@@ -12,6 +12,7 @@ var myObject = {
 					// Loop through prototypeList to check if this object has
 					// a parent with a function whose name == funcName
 					for (parent in this.prototypeList) {
+						// Idea: change if-else code below to a recursive function?
 						if (parent.hasOwnProperty(funcName)) {
 							// TODO: figure out how to call funcName(parameters)
 							// and return the result of calling funcName(parameters)
