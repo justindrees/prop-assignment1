@@ -1,14 +1,19 @@
 var myObject = {
-	prototypeList: [],
+//	prototypeList: [],
 	create: function(protoList) {
+		var copy = {
+			prototypeList: []
+		};
+		copy.prototype = myObject;
+
 		if (protoList == null) {
-			// Do nothing
+			copy.prototypeList = [];
 		} else {
 			for (element in protoList) {
-				prototypeList.push(element);
+				copy.prototypeList.push(element);
 			}
 		}
-		return this;
+		return copy;
 	},
 	call: function(funcName, parameters) {
 		// Check if this object has a function whose name == funcName
