@@ -3,23 +3,24 @@ var myObject = {
 	create: function(protoList) {
 		var copy = {
 			prototypeList: [],
-			call: function(funcName, parameters) {
+			visitedList: [],
+			call: function(funcName, parameters,visitedList) {
+				console.log("call function invoked");
 				// Check if this object has a function whose name == funcName
 				if (this.hasOwnProperty(funcName)) {
-					// TODO: figure out how to call funcName(parameters)
+					console.log("Function found");
+					this[funcName].apply(this,parameters);
+
+					// TODO: figurefuncNamellparameters(parameters)
 					// and return the result of calling funcName(parameters)
 				} else {
 					// Loop through prototypeList to check if this object has
 					// a parent with a function whose name == funcName
+					visitorList.push(this);		// put current object in visitedList
 					for (parent in this.prototypeList) {
-						// Idea: change if-else code below to a recursive function?
-						if (parent.hasOwnProperty(funcName)) {
-							// TODO: figure out how to call funcName(parameters)
-							// and return the result of calling funcName(parameters)
-						} else {
-							// Do a depth-first search through the parent's children
-							// (and the children's children)
-							// to see if any of these objects has a function whose name == funcName
+						if (typeof this.call == 'function') { // check if call function exists
+							console.log("call function existed in object");
+							parent.call(funcName, parameters,visiedList);
 						}
 					}
 				}
@@ -44,7 +45,9 @@ var myObject = {
 var obj0 = myObject.create(null);
 
 // Add a method to obj0 called func
-obj0.func = function(arg) { return "func0: " + arg; };
+obj0.func = function(arg) { 
+	console.log("Found function invoked");
+	return "func0: " + arg; };
 
 // Create a new object obj1 of myObject that inherit obj0
 var obj1 = myObject.create([obj0]);
@@ -53,11 +56,11 @@ var obj1 = myObject.create([obj0]);
 named 'func' with parameter ["hello"]  or if obj1 inherits another object with this method
 */
 var result1 = obj0.call("func", ["hello"]);
-var result2 = obj1.call("func", ["hello"]);
+//var result2 = obj1.call("func", ["hello"]);
 
 // Print result to screen. It should display "func0: hello"
-debug(result1);
-debug(result2);
+//debug(result1);
+//debug(result2);
 
 
 
