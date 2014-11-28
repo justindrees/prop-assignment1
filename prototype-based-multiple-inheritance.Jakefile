@@ -1,43 +1,45 @@
 var myObject = {
-//	prototypeList: [],
-	create: function(protoList) {
-		var copy = {
-			prototypeList: [],
-			visitedList: [],
-			call: function(funcName, parameters,visitedList) {
-				console.log("call function invoked");
-				// Check if this object has a function whose name == funcName
-				if (this.hasOwnProperty(funcName)) {
-					console.log("Function found");
-					this[funcName].apply(this,parameters);
+        create: function(protoList) {   
+                var copy = {
+                        prototypeList: [],
+                        visitedList: [],
+                        call: function(funcName, parameters,visitedList) {
+                                console.log("call function invoked");
+                                visitedList.push(this);         // put current object in visitedList
+                                // Check if this object has a function whose name == funcName
+                                if (this.hasOwnProperty(funcName) && visitedList.indexOf(this) != -1) {
+                                        console.log("Function found");
+                                        this[funcName].apply(this,parameters);
+                                        // TODO: figurefuncNamellparameters(parameters)
+                                        // and return the result of calling funcName(parameters)
+                                } else if(visitedList.indexOf(this) != -1) {
+                                        // Loop through prototypeList to check if this object has
+                                        // a parent with a function whose name == funcName
+                                        for (parent in this.prototypeList) {
+                                                if (typeof this.call == 'function') { // check if call function exists
+                                                        console.log("call function existed in object");
+                                                        parent.call(funcName, parameters,visitedList);
+                                                }
+                                        }
+                                }
+                        }
+                };
+                copy.prototype = myObject;
 
-					// TODO: figurefuncNamellparameters(parameters)
-					// and return the result of calling funcName(parameters)
-				} else {
-					// Loop through prototypeList to check if this object has
-					// a parent with a function whose name == funcName
-					visitorList.push(this);		// put current object in visitedList
-					for (parent in this.prototypeList) {
-						if (typeof this.call == 'function') { // check if call function exists
-							console.log("call function existed in object");
-							parent.call(funcName, parameters,visiedList);
-						}
-					}
-				}
-			}
-		};
-		copy.prototype = myObject;
-
-		if (protoList == null) {
-			copy.prototypeList = [];
-		} else {
-			for (element in protoList) {
-				copy.prototypeList.push(element);
-			}
-		}
-		return copy;
-	}
+                if (protoList == null) {
+                        copy.prototypeList = [];
+                } else {
+                        for (element in protoList) {
+                                copy.prototypeList.push(element);
+                        }
+                }
+                return copy;
+        }
 }
+
+// go back if end is reached and check other branches
+// check what circular prevention actually is
+
 
 
 // Test code
@@ -46,8 +48,9 @@ var obj0 = myObject.create(null);
 
 // Add a method to obj0 called func
 obj0.func = function(arg) { 
-	console.log("Found function invoked");
-	return "func0: " + arg; };
+
+// go back if end is reached and check other branches   console.log("Found function invoked");
+        return "func0: " + arg; };
 
 // Create a new object obj1 of myObject that inherit obj0
 var obj1 = myObject.create([obj0]);
