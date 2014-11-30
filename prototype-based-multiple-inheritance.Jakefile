@@ -12,11 +12,12 @@ var myObject = {
                                         return this[funcName].apply(this,parameters);
                                         // TODO: figurefuncNamellparameters(parameters)
                                         // and return the result of calling funcName(parameters)
-                                } else if (copy.visitedList.indexOf(this) != -1) {
+                                } else if (this.visitedList.indexOf(this) != -1) {
                                         // Loop through prototypeList to check if this object has
                                         // a parent with a function whose name == funcName
-                                        for (parent in this.prototypeList) {
-                                                if (typeof this.call == 'function') { // check if call function exists
+                                        for (parent in copy.prototypeList) {
+                                                if (typeof parent.call == 'function') { // check if call function exists
+                                                //if (parent.hasOwnProperty(funcName)) {
                                                         console.log("call function existed in object");
                                                         parent.call(funcName, parameters,visitedList);
                                                 }
@@ -54,14 +55,23 @@ var obj1 = myObject.create([obj0]);
 named 'func' with parameter ["hello"]  or if obj1 inherits another object with this method
 */
 var result1 = obj0.call("func", ["hello"]);
-//var result2 = obj1.call("func", ["hello"]);
+var result2 = obj1.call("func", ["hello"]);
 
 // Print result to screen. It should display "func0: hello"
 console.log(result1);
-//console.log(result2);
+console.log(result2);
 
 
 /*
+Assignment Test Code:
+var obj0 = myObject.create(null);
+obj0.func = function(arg) { return "func0: " + arg; };
+var obj1 = myObject.create([obj0]);
+var obj2 = myObject.create([]);
+obj2.func = function(arg) { return "func2: " + arg; };
+var obj3 = myObject.create([obj1, obj2]);
+var result = obj3.call("func", ["hello"]);
+
 http://stackoverflow.com/questions/9163341/multiple-inheritance-prototypes-in-javascript
 http://www.phpied.com/3-ways-to-define-a-javascript-class/
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
@@ -82,7 +92,7 @@ The multiple inheritance should work as follows: when invoking a function
 of an object that does not exists within the object itself then it is first
 search for in its first prototype, then in its second prototype etc. 
 When searching for a function in a prototype, if it does not exist within
-the prototype then it is search for in the prototypes of the prototype etc. 
+the prototype then search for it in the prototypes of the prototype etc. 
 Thus the search for a function should be performed in a depth-first manner 
 and from beginning-to-end in each object's list of prototypes.
 
@@ -114,13 +124,4 @@ obj.funcA;
 But we should implement call method:  obj.call(funcA, [...])
 It searches tree to find the appropriate function to use.
 
-
-Example:
-var obj0 = myObject.create(null);
-obj0.func = function(arg) { return "func0: " + arg; };
-var obj1 = myObject.create([obj0]);
-var obj2 = myObject.create([]);
-obj2.func = function(arg) { return "func2: " + arg; };
-var obj3 = myObject.create([obj1, obj2]);
-var result = obj3.call("func", ["hello"]);
 */
