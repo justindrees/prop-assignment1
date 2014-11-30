@@ -9,7 +9,7 @@ var myObject = {
                                 // Check if this object has a function whose name == funcName
                                 if (this.hasOwnProperty(funcName) && this.visitedList.indexOf(this) != -1) {
                                         console.log("Function found");
-                                        this[funcName].apply(this,parameters);
+                                        return this[funcName].apply(this,parameters);
                                         // TODO: figurefuncNamellparameters(parameters)
                                         // and return the result of calling funcName(parameters)
                                 } else if (copy.visitedList.indexOf(this) != -1) {
