@@ -4,11 +4,11 @@ var myObject = {
                         prototypeList: [],
                         visitedList: [],
                         call: function(funcName, parameters,visitedList) {
-                                console.log("call function invoked");
-                                visitedList.push(this);         // put current object in visitedList
+                                debug("call function invoked");
+                                copy.visitedList.push(this);         // put current object in visitedList
                                 // Check if this object has a function whose name == funcName
-                                if (this.hasOwnProperty(funcName) && visitedList.indexOf(this) != -1) {
-                                        console.log("Function found");
+                                if (this.hasOwnProperty(funcName) && copy.visitedList.indexOf(this) != -1) {
+                                        debug("Function found");
                                         this[funcName].apply(this,parameters);
                                         // TODO: figurefuncNamellparameters(parameters)
                                         // and return the result of calling funcName(parameters)
@@ -17,7 +17,7 @@ var myObject = {
                                         // a parent with a function whose name == funcName
                                         for (parent in this.prototypeList) {
                                                 if (typeof this.call == 'function') { // check if call function exists
-                                                        console.log("call function existed in object");
+                                                        debug("call function existed in object");
                                                         parent.call(funcName, parameters,visitedList);
                                                 }
                                         }
@@ -47,12 +47,12 @@ var myObject = {
 var obj0 = myObject.create(null);
 
 // Add a method to obj0 called func
-obj0.func = function(arg) { 
+obj0.func = function(arg) { return "func0: " + arg; };
 
-// go back if end is reached and check other branches   console.log("Found function invoked");
-        return "func0: " + arg; };
+// go back if end is reached and check other branches
+// console.log("Found function invoked");
 
-// Create a new object obj1 of myObject that inherit obj0
+// Create a new object obj1 of myObject that inherits obj0
 var obj1 = myObject.create([obj0]);
 
 /* Create variable that uses 'call' method to see if obj1 has a method
