@@ -5,7 +5,7 @@ var myObject = {
                         call: function(funcName, parameters) {
                                 // Check if this object has a function whose name == funcName
                                 if (this.hasOwnProperty(funcName)) {
-                                        console.log("Note: at line 8");
+                                        console.log("Note: at line 8, found the function");
                                         return this[funcName].apply(this,parameters);
                                 } else {
                                         // Loop through prototypeList to check if this object has a parent with a function == funcName
