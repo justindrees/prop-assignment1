@@ -2,24 +2,26 @@ var myObject = {
         create: function(protoList) {   
                 var copy = {
                         prototypeList: [],
-                        visitedList: [],
-                        call: function(funcName, parameters, visitedList) {
-                                console.log("call function invoked");
-                                this.visitedList.push(this);         // put current object in visitedList
+                        call: function(funcName, parameters) {
                                 // Check if this object has a function whose name == funcName
-                                if (this.hasOwnProperty(funcName) && this.visitedList.indexOf(this) != -1) {
-                                        console.log("Function found");
+                                if (this.hasOwnProperty(funcName)) {
+                                        console.log("Note: at line 8");
                                         return this[funcName].apply(this,parameters);
-                                        // TODO: figurefuncNamellparameters(parameters)
-                                        // and return the result of calling funcName(parameters)
-                                } else if (this.visitedList.indexOf(this) != -1) {
-                                        // Loop through prototypeList to check if this object has
-                                        // a parent with a function whose name == funcName
-                                        for (parent in copy.prototypeList) {
-                                                if (typeof parent.call == 'function') { // check if call function exists
-                                                //if (parent.hasOwnProperty(funcName)) {
-                                                        console.log("call function existed in object");
-                                                        parent.call(funcName, parameters,visitedList);
+                                } else {
+                                        // Loop through prototypeList to check if this object has a parent with a function == funcName
+                                        for (var i = 0, ic = this.prototypeList.length; i < ic; i++) {
+                                                var parent = this.prototypeList[i];     // local variable for the object in the prototypeList
+                                                console.log("Note: at line 14, parent index = " + i + ", object = " + parent);
+                                                // check if parent has a function == funcName
+                                                if (parent.hasOwnProperty(funcName)) {
+                                                        console.log("Note: at line 16");
+                                                        return parent.call(funcName, parameters);
+                                                } else if (parent.prototypeList.length > 0) {   // check if parent has parents in the prototypeList
+                                                        for (var j = 0, jc = parent.prototypeList.length; j < jc; j++) {    // Loop through parent's parents in prototypeList
+                                                                var parentsParent = parent.prototypeList[j];    // local variable for the object in the prototypeList
+                                                                console.log("Note: at line 21, parentsParent = " + parentsParent);
+                                                                parentsParent.call(funcName, parameters);   // use call method to recursively check if parentsParent (or any of its parents) has a function == funcName
+                                                        }
                                                 }
                                         }
                                 }
@@ -30,40 +32,16 @@ var myObject = {
                 if (protoList == null) {
                         copy.prototypeList = [];
                 } else {
-                        for (element in protoList) {
-                                copy.prototypeList.push(element);
+                        for (var i = 0, ic = protoList.length; i < ic; i++) {
+                            copy.prototypeList.push(protoList[i]);
                         }
                 }
                 return copy;
         }
 }
 
-// go back if end is reached and check other branches
-// check what circular prevention actually is
 
-// Test code
-// Create a new object "obj0" of myObject that doesn't inherit
-var obj0 = myObject.create(null);
-
-// Add a method to obj0 called func
-obj0.func = function(arg) { return "func0: " + arg; };
-
-// Create a new object obj1 of myObject that inherits obj0
-var obj1 = myObject.create([obj0]);
-
-/* Create variable that uses 'call' method to see if obj1 has a method
-named 'func' with parameter ["hello"]  or if obj1 inherits another object with this method
-*/
-var result1 = obj0.call("func", ["hello"]);
-var result2 = obj1.call("func", ["hello"]);
-
-// Print result to screen. It should display "func0: hello"
-console.log(result1);
-console.log(result2);
-
-
-/*
-Assignment Test Code:
+// Assignment Test Code:
 var obj0 = myObject.create(null);
 obj0.func = function(arg) { return "func0: " + arg; };
 var obj1 = myObject.create([obj0]);
@@ -71,16 +49,10 @@ var obj2 = myObject.create([]);
 obj2.func = function(arg) { return "func2: " + arg; };
 var obj3 = myObject.create([obj1, obj2]);
 var result = obj3.call("func", ["hello"]);
-
-http://stackoverflow.com/questions/9163341/multiple-inheritance-prototypes-in-javascript
-http://www.phpied.com/3-ways-to-define-a-javascript-class/
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript
-http://stackoverflow.com/questions/2064731/good-example-of-javascripts-prototype-based-inheritance
-http://javascript.info/tutorial/inheritance
-http://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/
-http://stackoverflow.com/questions/3007460/javascript-check-if-anonymous-object-has-a-method
+console.log("result is " + result);
 
 
+/*
 PROTOTYPE-BASED MULTIPLE INHERITANCE
 Task is to create an object 'myObject' with a 'create' method that supports
 multiple inheritance of functions: 'myObject.create(prototypeList)',
