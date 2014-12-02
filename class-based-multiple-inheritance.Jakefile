@@ -21,14 +21,23 @@ function createClass(className, superClassList) {
 			var result;
 			var instanceObject = {	// the instance object
 				call: function(funcName, parameters){		// method to search for the function in the tree
+					console.log("---------call function invoked--------- "+n);
 					if(typeof t[funcName] == 'function'){
 						result = t[funcName].apply(t,parameters);
+						console.log("FOUND IN: "+n);
 						return result;
 					}else if(superC != null || superC == 'undefined'){
-						for(i = 0; i < superC.length; i++){
+						console.log("WASNT FOUND IN: "+n+"....beginning for loop of its superclasses");
+						console.log(n+" superclasses are: "+superC+" and the length of superC is: "+superC.length);
+						for(var i = 0; i < superC.length; i++){
+							console.log(t.name+" calling on "+superC[i].name);
+							console.log("1 superC length of "+t.name+": "+superC.length+" i: "+i);
 							new1 = superC[i].new();
                         	result = new1.call(funcName, parameters);
+                        	console.log("---------back in call function of "+n+"---------");
+                        	console.log("2 superC length of "+t.name+": "+superC.length+" i: "+i);
 						}
+						return result;
 					}
 					return result;
 				}
@@ -38,6 +47,18 @@ function createClass(className, superClassList) {
 	}
 	return classObject;
 };
+
+var class0 = createClass("Class0", null);
+class0.func0 = function(arg) { return "func0: " + arg; };
+var class1 = createClass("Class1", [class0]);
+var class2 = createClass("Class2", []);
+class2.func2 = function(arg) { return "func2: " + arg; };
+var class3 = createClass("Class3", [class1, class2]);
+var obj3 = class3.new();
+var result = obj3.call("func2", ["hello"]);
+console.log("result: "+result);
+
+
 
 // TESTS
 
@@ -49,13 +70,3 @@ var result = obj.call("func", ["hello"]);
 console.log("result: "+result);*/
 
 //---------------------------
-
-/*var class0 = createClass("Class0", null);
-class0.func0 = function(arg) { return "func0: " + arg; };
-var class1 = createClass("Class1", [class0]);
-var class2 = createClass("Class2", []);
-class2.func2 = function(arg) { return "func2: " + arg; };
-var class3 = createClass("Class3", [class1, class2]);
-var obj3 = class3.new();
-var result = obj3.call("func0", ["hello"]);
-console.log("result: "+result);*/
