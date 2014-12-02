@@ -34,6 +34,9 @@ function createClass(className, superClassList) {
 							console.log("1 superC length of "+t.name+": "+superC.length+" i: "+i);
 							new1 = superC[i].new();
                         	result = new1.call(funcName, parameters);
+                        	if(result != undefined){
+                        		break;
+                        	}
                         	console.log("---------back in call function of "+n+"---------");
                         	console.log("2 superC length of "+t.name+": "+superC.length+" i: "+i);
 						}
@@ -55,7 +58,7 @@ var class2 = createClass("Class2", []);
 class2.func2 = function(arg) { return "func2: " + arg; };
 var class3 = createClass("Class3", [class1, class2]);
 var obj3 = class3.new();
-var result = obj3.call("func2", ["hello"]);
+var result = obj3.call("func0", ["hello"]);
 console.log("result: "+result);
 
 
