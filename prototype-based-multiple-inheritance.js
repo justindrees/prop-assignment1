@@ -29,24 +29,7 @@ var myObject = {
                                 }
                             }
                         }
-                    }/*
-                    var ans = []
-                    var parentList = this.prototypeList;
-                    while (parentList.length != 0) {
-                        var parent = parentList.pop();
-                        if (parent.hasOwnProperty(funcName)) {
-                            ans.push(parent);
-                            break;
-                        } else if (parent.prototypeList.length > 0) {
-                            var parentsParent = parent.prototypeList.pop();
-                            if (parentsParent.hasOwnProperty(funcName)) {
-                                ans.push(parentsParent);
-                                break;
-                            } else {
-
-                            }
-                        }
-                    }*/
+                    }
                 }
             }
         };
