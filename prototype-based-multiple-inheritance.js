@@ -1,43 +1,61 @@
 var myObject = {
-        create: function(protoList) {   
-                var copy = {
-                        prototypeList: [],
-                        call: function(funcName, parameters) {
-                                // Check if this object has a function whose name == funcName
-                                if (this.hasOwnProperty(funcName)) {
-                                        console.log("Note: at line 8, found the function");
-                                        return this[funcName].apply(this,parameters);
-                                } else {
-                                        // Loop through prototypeList to check if this object has a parent with a function == funcName
-                                        for (var i = 0, ic = this.prototypeList.length; i < ic; i++) {
-                                                var parent = this.prototypeList[i];     // local variable for the object in the prototypeList
-                                                console.log("Note: at line 14, parent index = " + i + ", object = " + parent);
-                                                // check if parent has a function == funcName
-                                                if (parent.hasOwnProperty(funcName)) {
-                                                        console.log("Note: at line 16");
-                                                        return parent.call(funcName, parameters);
-                                                } else if (parent.prototypeList.length > 0) {   // check if parent has parents in the prototypeList
-                                                        for (var j = 0, jc = parent.prototypeList.length; j < jc; j++) {    // Loop through parent's parents in prototypeList
-                                                                var parentsParent = parent.prototypeList[j];    // local variable for the object in the prototypeList
-                                                                console.log("Note: at line 21, parentsParent = " + parentsParent);
-                                                                parentsParent.call(funcName, parameters);   // use call method to recursively check if parentsParent (or any of its parents) has a function == funcName
-                                                        }
-                                                }
-                                        }
-                                }
-                        }
-                };
-                copy.prototype = myObject;
-
-                if (protoList == null) {
-                        copy.prototypeList = [];
+    create: function(protoList) {   
+        var copy = {
+            prototypeList: [],
+            call: function(funcName, parameters) {
+                // Check if this object has a function whose name == funcName
+                if (this.hasOwnProperty(funcName)) {
+                    console.log("Note: at line 8, found the function");
+                    return this[funcName].apply(this,parameters);
                 } else {
-                        for (var i = 0, ic = protoList.length; i < ic; i++) {
-                            copy.prototypeList.push(protoList[i]);
+                    // Loop through prototypeList to check if this object has a parent with a function == funcName
+                    for (var i = 0, ic = this.prototypeList.length; i < ic; i++) {
+                        var parent = this.prototypeList[i];     // local variable for the object in the prototypeList
+                        console.log("Note: at line 14, parent index = " + i + ", object = " + parent);
+
+                        if (parent.hasOwnProperty(funcName)) {  // check if parent has a function == funcName
+                            console.log("Note: at line 17");
+                            return parent[funcName].apply(parent,parameters);
+                        } else if (parent.prototypeList.length > 0) {   // check if parent has parents in the prototypeList
+                            for (var j = 0, jc = parent.prototypeList.length; j < jc; j++) {    // Loop through parent's parents in prototypeList
+                                var parentsParent = parent.prototypeList[j];    // local variable for the object in the prototypeList
+                                console.log("Note: at line 23, parentsParent = " + parentsParent);
+                                parentsParent.call(funcName, parameters);   // use call method to recursively check if parentsParent (or any of its parents) has a function == funcName
+                            }
                         }
+                    }/*
+                    var ans = []
+                    var parentList = this.prototypeList;
+                    while (parentList.length != 0) {
+                        var parent = parentList.pop();
+                        if (parent.hasOwnProperty(funcName)) {
+                            ans.push(parent);
+                            break;
+                        } else if (parent.prototypeList.length > 0) {
+                            var parentsParent = parent.prototypeList.pop();
+                            if (parentsParent.hasOwnProperty(funcName)) {
+                                ans.push(parentsParent);
+                                break;
+                            } else {
+
+                            }
+                        }
+                    }*/
                 }
-                return copy;
+            }
+        };
+
+        copy.prototype = myObject;
+
+        if (protoList == null) {
+            copy.prototypeList = [];
+        } else {
+            for (var i = 0, ic = protoList.length; i < ic; i++) {
+                copy.prototypeList.push(protoList[i]);
+            }
         }
+        return copy;
+    }
 }
 
 
@@ -50,6 +68,7 @@ obj2.func = function(arg) { return "func2: " + arg; };
 var obj3 = myObject.create([obj1, obj2]);
 var result = obj3.call("func", ["hello"]);
 console.log("result is " + result);
+console.log("result should be func0: hello");
 
 
 /*
