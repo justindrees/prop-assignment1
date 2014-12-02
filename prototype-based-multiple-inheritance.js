@@ -72,11 +72,7 @@ var obj2 = myObject.create([]);
 obj2.func = function(arg) { return "func2: " + arg; };
 var obj3 = myObject.create([obj1, obj2]);
 var result = obj3.call("func", ["hello"]);
-console.log("result is " + result);
-
-var result1 = obj1.call("func", ["hello"]);
-console.log("result is " + result1);
-
+console.log("result: " + result);
 
 /* Notes:
 There can be name clashes (same name of prototype which another inherits).
