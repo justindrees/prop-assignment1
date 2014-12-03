@@ -1,15 +1,10 @@
-/*
-CLASS-BASED MULTIPLE INHERITANCE
-Make a method 'createClass(className, [superclasses])'
-It returns an object that points to the class.
-Can only instantiate with superclasses that exist.
-Note (task c): prevent infinite loop when using .call()
+<html>
+<body>
+<h1></h1>
 
-var class0 = createClass(class0, []);
-class0.new();
-obj0.class(funcName, []); //Search in class object for function, then look in inherited classes
-*/
+<p id="res">s</p>
 
+<script>
 function createClass(className, superClassList) {
 	var classObject = {				// defines the class
 		name: className,
@@ -49,3 +44,19 @@ function createClass(className, superClassList) {
 	}
 	return classObject;
 };
+
+var class0 = createClass("Class0", null);
+class0.func0 = function(arg) { return "func0: " + arg; };
+var class1 = createClass("Class1", [class0]);
+var class2 = createClass("Class2", []);
+class2.func2 = function(arg) { return "func2: " + arg; };
+var class3 = createClass("Class3", [class1, class2]);
+var obj3 = class3.new();
+var result = obj3.call("func0", ["hello"]);
+
+document.getElementById("res").innerHTML = result;
+
+</script>
+<h1></h1>
+</body>
+</html>
