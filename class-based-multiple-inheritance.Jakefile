@@ -15,30 +15,29 @@ function createClass(className, superClassList) {
 		name: className,
 		superClasses: superClassList,
 		new: function() {			// creates an instance of the defined class
-			var superC = superClassList;
-			var n = className;
-			var t = this;
-			var result;
+			// variables copied from the class that new() is being called from into this particular instance object, some may be redundant
+			var superC = superClassList;	// give the instance object created from the class a copy of the superclasses
+			var n = className;				// name of the instances class
+			var t = this;					// a copy of the class object that the new function is being called from
+			var result;						// will contain the function if it is found in the tree
 			var instanceObject = {	// the instance object
 				call: function(funcName, parameters){		// method to search for the function in the tree
-					console.log("---------call function invoked--------- "+n);
-					if(typeof t[funcName] == 'function'){
+					console.log("---------call function of "+n+" invoked---------");
+					if(typeof t[funcName] == 'function'){		// check if the function that is searched for exists in the instance
 						result = t[funcName].apply(t,parameters);
 						console.log("FOUND IN: "+n);
 						return result;
-					}else if(superC != null || superC == 'undefined'){
+					}else if(superC != null || superC == 'undefined'){		// if the list of superclasses is null or undefined there is no point to try to loop through it
 						console.log("WASNT FOUND IN: "+n+"....beginning for loop of its superclasses");
 						console.log(n+" superclasses are: "+superC+" and the length of superC is: "+superC.length);
-						for(var i = 0; i < superC.length; i++){
+						for(var i = 0; i < superC.length; i++){		// loop through the current instances superclasses
 							console.log(t.name+" calling on "+superC[i].name);
-							console.log("1 superC length of "+t.name+": "+superC.length+" i: "+i);
 							new1 = superC[i].new();
                         	result = new1.call(funcName, parameters);
                         	if(result != undefined){			// if result has been found, break away from further search
                         		break;
                         	}
                         	console.log("---------back in call function of "+n+"---------");
-                        	console.log("2 superC length of "+t.name+": "+superC.length+" i: "+i);
 						}
 						return result;
 					}
@@ -50,47 +49,3 @@ function createClass(className, superClassList) {
 	}
 	return classObject;
 };
-
-
-// TESTS
-
-var class4 = createClass("Class0", null);
-class4.func4 = function(arg) { return "func4: " + arg; };
-classY = createClass("ClassY", []);
-classY.funcY = function(arg) { return "funcY: " + arg; };
-var class5 = createClass("Class5", [class4,classY]);
-var class6 = createClass("Class6", []);
-class6.func6 = function(arg) { return "func6: " + arg; };
-var class7 = createClass("Class3", [class5,class6]);
-
-var class0 = createClass("Class0", [class7]);
-class0.func0 = function(arg) { return "func0: " + arg; };
-var class1 = createClass("Class1", [class0]);
-var class2 = createClass("Class2", []);
-class2.func2 = function(arg) { return "func2: " + arg; };
-var class3 = createClass("Class3", [class1, class2]);
-
-
-var obj3 = class3.new();
-var result = obj3.call("123", ["hello"]);
-console.log("result: "+result);
-
-
-
-/*var class0 = createClass("Class0", null);
-class0.func0 = function(arg) { return "func0: " + arg; };
-var class1 = createClass("Class1", [class0]);
-var class2 = createClass("Class2", []);
-class2.func2 = function(arg) { return "func2: " + arg; };
-var class3 = createClass("Class3", [class1, class2]);
-var obj3 = class3.new();
-var result = obj3.call("func0", ["hello"]);
-console.log("result: "+result);*/
-
-
-/*var class0 = createClass("Class0", null);
-class0.func = function(arg) { return "func: " + arg; };
-var class1 = createClass("Class1", [class0]);
-var obj = class1.new();
-var result = obj.call("func", ["hello"]);
-console.log("result: "+result);*/
