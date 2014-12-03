@@ -34,7 +34,7 @@ function createClass(className, superClassList) {
 							console.log("1 superC length of "+t.name+": "+superC.length+" i: "+i);
 							new1 = superC[i].new();
                         	result = new1.call(funcName, parameters);
-                        	if(result != undefined){
+                        	if(result != undefined){			// if result has been found, break away from further search
                         		break;
                         	}
                         	console.log("---------back in call function of "+n+"---------");
@@ -51,7 +51,33 @@ function createClass(className, superClassList) {
 	return classObject;
 };
 
-var class0 = createClass("Class0", null);
+
+// TESTS
+
+var class4 = createClass("Class0", null);
+class4.func4 = function(arg) { return "func4: " + arg; };
+classY = createClass("ClassY", []);
+classY.funcY = function(arg) { return "funcY: " + arg; };
+var class5 = createClass("Class5", [class4,classY]);
+var class6 = createClass("Class6", []);
+class6.func6 = function(arg) { return "func6: " + arg; };
+var class7 = createClass("Class3", [class5,class6]);
+
+var class0 = createClass("Class0", [class7]);
+class0.func0 = function(arg) { return "func0: " + arg; };
+var class1 = createClass("Class1", [class0]);
+var class2 = createClass("Class2", []);
+class2.func2 = function(arg) { return "func2: " + arg; };
+var class3 = createClass("Class3", [class1, class2]);
+
+
+var obj3 = class3.new();
+var result = obj3.call("123", ["hello"]);
+console.log("result: "+result);
+
+
+
+/*var class0 = createClass("Class0", null);
 class0.func0 = function(arg) { return "func0: " + arg; };
 var class1 = createClass("Class1", [class0]);
 var class2 = createClass("Class2", []);
@@ -59,11 +85,8 @@ class2.func2 = function(arg) { return "func2: " + arg; };
 var class3 = createClass("Class3", [class1, class2]);
 var obj3 = class3.new();
 var result = obj3.call("func0", ["hello"]);
-console.log("result: "+result);
+console.log("result: "+result);*/
 
-
-
-// TESTS
 
 /*var class0 = createClass("Class0", null);
 class0.func = function(arg) { return "func: " + arg; };
@@ -71,5 +94,3 @@ var class1 = createClass("Class1", [class0]);
 var obj = class1.new();
 var result = obj.call("func", ["hello"]);
 console.log("result: "+result);*/
-
-//---------------------------
