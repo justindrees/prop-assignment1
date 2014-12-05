@@ -37,8 +37,8 @@ var myObject = {
             for (var i = 0, ic = protoList.length; i < ic; i++) {   // loop through the array of parents
                 if (protoList[i].prototypeList.indexOf(copy) != -1) {   // if the parent has this object as a parent, then throw error
                     throw "IllegalArgument";                            // but how can the parent have this object as a parent since this object is being created now?
-                } else {
-                    copy.prototypeList.push(protoList[i]);
+                } else {                                                // else if the parent does not have this object as a parent
+                    copy.prototypeList.push(protoList[i]);              // add parent to array of parents for this object
                 }
             }
         }
@@ -66,4 +66,13 @@ var objA = myObject.create([objB]);
 var objX = myObject.create(null);
 var objY = myObject.create([objX]);
 //objX.create([objY]);
+
+/*
+The following code gives you a circular inheritance.
+Assume each object has an attribute myPrototypes, which is an array holding references to its (possibly multiple) prototypes.
+
+var obj0 = myObject.create([ ]);
+var obj1 = myObject.create([obj0]);
+obj0.myPrototypes = [obj1];
+*/
 
