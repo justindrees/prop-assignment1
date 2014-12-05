@@ -17,11 +17,11 @@ var myObject = {
                         } else if (parent.prototypeList.length > 0) {   // check if parent has parents in the prototypeList
                             for (var j = 0, jc = parent.prototypeList.length; j < jc; j++) {    // Loop through parent's parents in prototypeList
                                 var parentsParent = parent.prototypeList[j];    // local variable for the object in the prototypeList
-                                var isFuncInParent = parentsParent.call(funcName, parameters);   // use call method to recursively check if parentsParent (or any of its parents) has a function == funcName
-                                if (isFuncInParent != null) {
-                                    i = ic; // stop outer loop by setting continuation condition to false
-                                    j = jc; // stop inner loop by setting continuation condition to false
-                                    return isFuncInParent;
+                                var funcInParent = parentsParent.call(funcName, parameters);   // use call method to recursively check if parentsParent (or any of its parents) has a function == funcName
+                                if (funcInParent != null) { // if the parentsParent (or any of its parents) does have a function == funcName then funcInParent will not equal null
+                                    i = ic;                 // stop outer loop by setting continuation condition to false
+                                    j = jc;                 // stop inner loop by setting continuation condition to false
+                                    return funcInParent;
                                 }
                             }
                         }
