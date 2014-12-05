@@ -55,24 +55,3 @@ obj2.func = function(arg) { return "func2: " + arg; };
 var obj3 = myObject.create([obj1, obj2]);
 var result = obj3.call("func", ["hello"]);
 console.log("result: " + result);
-
-// Circular Inheritance tests
-var objD = myObject.create();
-var objE = myObject.create(null);
-var objC = myObject.create([]);
-var objB = myObject.create([objC, objD, objE]);
-var objA = myObject.create([objB]);
-
-var objX = myObject.create(null);
-var objY = myObject.create([objX]);
-//objX.create([objY]);
-
-/*
-The following code gives you a circular inheritance.
-Assume each object has an attribute myPrototypes, which is an array holding references to its (possibly multiple) prototypes.
-
-var obj0 = myObject.create([ ]);
-var obj1 = myObject.create([obj0]);
-obj0.myPrototypes = [obj1];
-*/
-
